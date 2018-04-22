@@ -7,22 +7,16 @@ import {Child, Passenger} from "../../models/passenger.interface";
     styleUrls: ['passenger-dashboard.component.scss'],
     template: `
         <div>
-            <passenger-count></passenger-count>
-            <passenger-detail></passenger-detail>
-            <h3>Airline Passengers</h3>
-            <ul>
-                <li *ngFor="let passenger of passengers; let i = index;">
-                    <span
-                            class="status"
-                            [class.checked-in]="passenger.checkedIn">
-                    </span>
-                    {{i}}: {{passenger.fullname}}
-                    <div class="date">
-                        Check in date:
-                        {{ passenger.checkInDate ? (passenger.checkInDate) : 'Not checked in'}}
-                    </div>
-                </li>
-            </ul>
+            <passenger-count
+                    [items]="passengers">
+            </passenger-count>
+            <passenger-detail
+                    *ngFor="let passenger of passengers;"
+                    [detail]="passenger"
+                    (remove)="handleRemove($event)"
+                    (edit)="handleEdit($event)"
+            >
+            </passenger-detail>
         </div>
     `
 })
@@ -72,5 +66,21 @@ export class PassengerDashboardComponent implements OnInit {
                 ]
             },
         ]
+    }
+
+    handleRemove(event: Passenger) {
+        console.log(event);
+        this.passengers = this.passengers
+            .filter((passenger: Passenger) => passenger.id !== event.id)
+    }
+
+    handleEdit(event: Passenger) {
+        this.passengers = this.passengers
+            .map((passenger: Passenger) => {
+                if (passenger.id === event.id) {
+                    passenger = Object.assign({}, passenger, event);
+                }
+                return passenger;
+            })
     }
 }
