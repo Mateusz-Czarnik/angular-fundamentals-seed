@@ -5,35 +5,21 @@
       "fullname": "joas",
       "checkedIn": true,
       "checkInDate": 1524379588459,
-      "children": null
+      "baggage": ""
     },
     {
       "id": 2,
       "fullname": "Jane Doe",
       "checkedIn": false,
       "checkInDate": null,
-      "children": [
-        {
-          "name": "Ted",
-          "age": 12
-        },
-        {
-          "name": "Chloe",
-          "age": 8
-        }
-      ]
+      "baggage": ""
     },
     {
       "id": 3,
       "fullname": "Don Duckk",
       "checkedIn": true,
       "checkInDate": 1524379958754,
-      "children": [
-        {
-          "name": "Roxy",
-          "age": 2
-        }
-      ]
+      "baggage": ""
     }
   ]
 }
