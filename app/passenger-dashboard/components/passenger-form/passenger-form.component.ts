@@ -14,17 +14,27 @@ import {Baggage} from "../../models/baggage.interface";
                 Passenger name:
                 <input
                         type="text"
+                        required
                         name="fullname"
+                        #fullname="ngModel"
                         [ngModel]="detail?.fullname"
                 >
+                <div *ngIf="fullname.errors?.required && fullname.dirty" class="error">
+                    Passenger name is required
+                </div>
             </div>
             <div>
                 Passenger ID:
                 <input
                         type="number"
+                        required
                         name="id"
+                        #id="ngModel"
                         [ngModel]="detail?.id"
                 >
+                <div *ngIf="id.errors?.required && id.dirty" class="error">
+                    Passenger ID is required
+                </div>
             </div>
             <div>
                 <label>
@@ -63,20 +73,10 @@ import {Baggage} from "../../models/baggage.interface";
                 </select>
             </div>
             <div>
-                Luggage:
-                <select
-                        name="baggage"
-                        [ngModel]="detail?.baggage"
-                >
-                    <option
-                            *ngFor="let item of baggage"
-                            [ngValue]="item.key"
-                    >
-                        {{item.value}}
-                    </option>
-                </select>
+                {{ form.value | json }} <br>
+                Valid:{{ form.valid | json}} <br>
+                Invalid: {{ form.invalid | json}}
             </div>
-            {{ form.value | json }}
         </form>
     `
 })
@@ -89,13 +89,16 @@ export class PassengerFormComponent {
         {
             key: 'none',
             value: 'No baggage'
-        }, {
+        },
+        {
             key: 'hand-only',
             value: 'Hand baggage'
-        }, {
+        },
+        {
             key: 'hold-only',
             value: 'Hold baggage'
-        }, {
+        },
+        {
             key: 'hand-hold',
             value: 'Hand and hold baggage'
         },
