@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, Output, EventEmitter} from "@angular/core";
 
 import {Passenger} from "../../models/passenger.interface";
 import {Baggage} from "../../models/baggage.interface";
@@ -7,9 +7,11 @@ import {Baggage} from "../../models/baggage.interface";
     selector: 'passenger-form',
     styleUrls: ['passenger-form.component.scss'],
     template: `
-        <form #form="ngForm" novalidate>
-            Form!!
-            {{detail | json}}
+        <form
+                #form="ngForm"
+                novalidate
+                (ngSubmit)="handleSubmit(form.value, form.valid)"
+        >
             <div>
                 Passenger name:
                 <input
@@ -38,6 +40,7 @@ import {Baggage} from "../../models/baggage.interface";
             </div>
             <div>
                 <label>
+                    Checked in:
                     <input
                             type="checkbox"
                             name="checkedIn"
@@ -54,7 +57,6 @@ import {Baggage} from "../../models/baggage.interface";
                         name="checkInDate"
                         [ngModel]="detail?.checkInDate"
                 >
-
             </div>
 
             <div>
@@ -72,11 +74,12 @@ import {Baggage} from "../../models/baggage.interface";
                     </option>
                 </select>
             </div>
-            <div>
-                {{ form.value | json }} <br>
-                Valid:{{ form.valid | json}} <br>
-                Invalid: {{ form.invalid | json}}
-            </div>
+            <button
+                    type="submit"
+                    [disabled]="form.invalid"
+            >
+                Update passenger
+            </button>
         </form>
     `
 })
@@ -84,6 +87,9 @@ import {Baggage} from "../../models/baggage.interface";
 export class PassengerFormComponent {
     @Input()
     detail: Passenger;
+
+    @Output()
+    update: EventEmitter<Passenger> = new EventEmitter<Passenger>();
 
     baggage: Baggage[] = [
         {
@@ -107,6 +113,12 @@ export class PassengerFormComponent {
     toggleCheckIn(checkedIn: boolean) {
         if (checkedIn) {
             this.detail.checkInDate = Date.now();
+        }
+    }
+
+    handleSubmit(passenger: Passenger, isValid: boolean) {
+        if (isValid) {
+            this.update.emit(passenger);
         }
     }
 }

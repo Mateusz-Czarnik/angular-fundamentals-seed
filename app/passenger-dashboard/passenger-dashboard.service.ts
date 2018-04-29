@@ -43,7 +43,6 @@ export class PassengerDashboardService {
             .put(`${PASSENGER_API}/${passenger.id}`, passenger, options)
             .map((response: Response) => response.json())
             .catch((error: any) => Observable.throw(error.json()));
-
     }
 
     removePassenger(passenger: Passenger): Observable<Passenger> {
